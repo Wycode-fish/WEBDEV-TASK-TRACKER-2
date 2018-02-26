@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PORT=5400
+export PORT=3000
 export MIX_ENV=prod
 export GIT_PATH=/home/tracker2/src/task_tracker_2
 
@@ -27,7 +27,7 @@ mkdir -p ~/www
 mkdir -p ~/old
 
 NOW=`date +%s`
-if [ -d ~/www/tracker ]; then
+if [ -d ~/www/tracker2 ]; then
 	echo mv ~/www/tracker2 ~/old/$NOW
 	mv ~/www/tracker2 ~/old/$NOW
 fi
