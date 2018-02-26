@@ -1,0 +1,158 @@
+<style>
+
+  th,td {
+    text-align:center;
+  }
+
+  .btn {
+    font-size: 12px;
+  }
+
+  .banner {
+    margin-bottom: 20px;
+  }
+  .profile-col {
+    float:left;
+    font-size: 12px;
+    display: inline-block;
+    margin-right: 40px;
+    border-right: 2px dotted grey;
+    padding: 10px;
+  }
+
+  .profile-col span {
+    font-weight: bold;
+  }
+
+  .task-list {
+    clear:left;
+    font-size: 12px;
+    display: inline-block;
+  }
+</style>
+
+<!-- <h5 class="banner">Profile</h5> -->
+<h3>PROFILE</h3>
+<div class="profile-col">
+  <span>NAME: </span><br><%= @current_user.name %><br>
+
+  <br>
+
+  <span>EMAIL: </span><br><%= @current_user.email %><br>
+
+  <br>
+
+  <span>ID: </span><%= @current_user.id %><br>
+
+  <br>
+
+  <span>MANAGER: </span>
+  <%= if @current_user.manager_id do %>
+    <%= @current_user.manager_id %><br>
+  <% else %>
+    <%= "None" %>
+  <% end %><br>
+
+  <br>
+
+  <span>ASSIGNEES: </span><br>
+  <select>
+    <%= for id_name_str <- @id_name_list do %>
+      <option><%= id_name_str %></option>
+    <% end %>
+  </select>
+
+  <br><br>
+
+  <%= if Enum.count(@id_name_list) > 0 do %>
+    <span class="new-task-link"><%= link "New Task", to: task_path(@conn, :new), class: "btn btn-primary" %></span>
+  <% end %>
+
+</div>
+
+<div class="task-list">
+  <h6>YOUR MONITOR:</h6>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Is Finish</th>
+        <th>Complete Time(mins)</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+  <%= for task <- @tasks do %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <!--<td><%= task.start_time %></td>-->
+        <%= if task.is_finish do %>
+          <td style="background-color:powderblue;"><%= "Yes" %></td>
+        <% else %>
+          <td style="background-color:#ffb6c1;"><%= "No" %></td>
+        <% end %>
+
+        <!-- <td><%= (((task.end_time-task.start_time)/60/15)|>round)*15 %></td> -->
+        <%= if not task.is_finish do %>
+          <td><%= "-" %></td>
+        <% else %>
+          <td><%= (((task.end_time-task.start_time)/60/15)|>round)*15 %></td>
+        <% end %>
+
+        <td class="text-right">
+          <span><%= link "LOG", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
+          <%= if not task.is_finish and @current_user.id==task.assignee_id do %>
+            <span><%= link "edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
+          <% end %>
+          <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        </td>
+      </tr>
+  <% end %>
+    </tbody>
+  </table>
+  <br>
+  <h6>YOUR WORK LOG:</h6>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Is Finish</th>
+        <th>Complete Time(mins)</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+  <%= for task <- @works do %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <!--<td><%= task.start_time %></td>-->
+        <%= if task.is_finish do %>
+          <td style="background-color:powderblue;"><%= "Yes" %></td>
+        <% else %>
+          <td style="background-color:#ffb6c1;"><%= "No" %></td>
+        <% end %>
+
+        <!-- <td><%= (((task.end_time-task.start_time)/60/15)|>round)*15 %></td> -->
+        <%= if not task.is_finish do %>
+          <td><%= "-" %></td>
+        <% else %>
+          <td><%= (((task.end_time-task.start_time)/60/15)|>round)*15 %></td>
+        <% end %>
+
+        <td class="text-right">
+          <span><%= link "LOG", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
+          <%= if not task.is_finish and @current_user.id==task.assignee_id do %>
+            <span><%= link "edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
+    </tbody>
+  </table>
+</div>

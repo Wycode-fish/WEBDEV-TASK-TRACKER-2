@@ -1,0 +1,140 @@
+<script>
+  window.slot_path = "<%= slot_path(@conn, :index) %>";
+  window.current_task_id = "<%= @task.id %>";
+</script>
+
+<style>
+  .work-time-log {
+    font-size: 15px;
+    display: inline-block;
+    clear: left;
+  }
+  .static-info {
+    font-size: 15px;
+    display: inline-block;
+    float: left;
+    border-right: 2px dotted grey;
+    margin-right: 10px;
+    padding: 10px;
+  }
+  ul {
+    list-style-type: none;
+  }
+  th, td {
+    text-align: center;
+  }
+</style>
+
+<h3>Show Task</h3>
+
+<div class="static-info">
+
+    <strong>Title:</strong><br>
+    <%= @task.title %><br>
+
+    <br>
+
+    <strong>Description:</strong><br>
+    <%= @task.description %><br>
+
+    <br>
+
+    <strong>Create Time:</strong><br>
+    <!-- <%= ((:os.system_time(:second)-@task.start_time)/60)|>round %> mins ago -->
+    <%= @task.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:year) %>/
+    <%= @task.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:month) %>/
+    <%= @task.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:day) %> -
+    <%= @task.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:hour) %>:
+    <%= @task.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:minute) %>:
+    <%= @task.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:second) %><br>
+
+    <br>
+
+    <strong>End time:</strong><br>
+    <%= if @task.is_finish do %>
+      <%= @task.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:year) %>/
+      <%= @task.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:month) %>/
+      <%= @task.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:day) %> -
+      <%= @task.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:hour) %>:
+      <%= @task.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:minute) %>:
+      <%= @task.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:second) %>
+    <% else %>
+      <%= "-" %>
+    <% end %><br>
+
+    <br>
+
+    <strong>Total Work Time:</strong><br>
+    <%= if @total_time do %>
+      <%= @total_time %> mins
+    <% else %>
+      <%= "-" %>
+    <% end %><br>
+
+    <br>
+
+    <strong>Is finish:</strong><br>
+    <%= @task.is_finish %><br>
+
+    <br>
+
+    <strong>Creator:</strong><br>
+    <%= @task.creator.name %><br>
+
+    <br>
+
+    <strong>Assignee:</strong><br>
+    <%= @task.assignee.name %>
+
+    <br><br>
+
+    <%= if not @task.is_finish and @task.assignee_id == @current_user.id do %>
+        <button class="slot-button btn btn-primary"></button>
+    <% end %>
+
+    <br><br>
+
+    <span><%= link "Back", to: task_path(@conn, :index), class: "btn btn-primary" %></span>
+
+</div>
+
+<div class="work-time-log">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>slot No.</th>
+        <th>start time</th>
+        <th>end time</th>
+        <th>duration(mins)</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        <%= for slot <- @time_slots do %>
+          <tr>
+            <td><%= slot.id %></td>
+            <td>
+              <%= slot.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:year) %>/
+              <%= slot.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:month) %>/
+              <%= slot.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:day) %> -
+              <%= slot.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:hour) %>:
+              <%= slot.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:minute) %>:
+              <%= slot.start_time|>DateTime.from_unix|>elem(1)|>Map.get(:second) %>
+            </td>
+            <td>
+              <%= slot.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:year) %>/
+              <%= slot.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:month) %>/
+              <%= slot.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:day) %> -
+              <%= slot.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:hour) %>:
+              <%= slot.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:minute) %>:
+              <%= slot.end_time|>DateTime.from_unix|>elem(1)|>Map.get(:second) %>
+            </td>
+            <td><%= Float.ceil((slot.end_time - slot.start_time)/60) %></td>
+            <td><span><%= link "Edit", to: task_slot_edit_path(@conn, :slot_edit, slot), class: "btn btn-danger btn-xs" %></span></td>
+
+          </tr>
+        <% end %>
+    </tbody>
+  </table>
+</div>

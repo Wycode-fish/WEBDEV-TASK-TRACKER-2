@@ -1,0 +1,50 @@
+<script>
+  window.slot_path = "<%= slot_path(@conn, :index) %>";
+  window.current_task_id = "<%= @task.id %>";
+</script>
+
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+
+  <!-- <div class="form-group" style="margin-top:30px">
+    <%= label f, :assignee_id, class: "control-label" %>
+    <%= text_input f, :assignee_id, class: "form-control" %>
+    <%= error_tag f, :assignee_id %>
+  </div>
+
+  <span style="font-size:12px"><%= link "Check Available Assignees", to: user_path(@conn, :index) %></span> -->
+
+  <div class="static-">
+    <div class="form-group"  style="margin-top:30px;">
+      <%= label f, :title, class: "control-label" %>
+      <%= text_input f, :title, class: "form-control" %>
+      <%= error_tag f, :title %>
+    </div>
+
+    <div class="form-group" style="margin-top:30px;">
+      <%= label f, :description, class: "control-label" %>
+      <%= textarea f, :description, class: "form-control" %>
+      <%= error_tag f, :description %>
+    </div>
+
+    <div class="form-group">
+      <%= hidden_input f, :creator_id, value: @task.creator_id, class: "form-control"%>
+    </div>
+  </div>
+  
+    <div class="form-group" style="margin-top:30px;">
+      <%= label f, :is_finish, class: "control-label" %>
+      <%= checkbox f, :is_finish, class: "checkbox" %>
+      <%= error_tag f, :is_finish %>
+    </div>
+
+
+  <div class="form-group" style="margin-top:30px;">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
