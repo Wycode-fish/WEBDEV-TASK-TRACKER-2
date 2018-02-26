@@ -20,5 +20,5 @@ defmodule TaskTracker2Web.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :task_tracker
+  use Gettext, otp_app: :task_tracker_2
 end

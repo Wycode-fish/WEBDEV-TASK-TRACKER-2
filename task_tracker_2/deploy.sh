@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PORT=5301
+export PORT=5400
 export MIX_ENV=prod
 export GIT_PATH=/home/tracker2/src/task_tracker_2
 
@@ -33,7 +33,7 @@ if [ -d ~/www/tracker ]; then
 fi
 
 mkdir -p ~/www/tracker2
-REL_TAR=~/src/task_tracker_2/_build/prod/rel/task_tracker/releases/0.0.1/task_tracker.tar.gz
+REL_TAR=~/src/task_tracker_2/_build/prod/rel/task_tracker_2/releases/0.0.1/task_tracker_2.tar.gz
 (cd ~/www/tracker2 && tar xzvf $REL_TAR)
 
 crontab - <<CRONTAB

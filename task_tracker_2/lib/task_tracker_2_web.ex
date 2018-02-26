@@ -28,7 +28,7 @@ defmodule TaskTracker2Web do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/task_tracker_web/templates",
+      use Phoenix.View, root: "lib/task_tracker_2_web/templates",
                         namespace: TaskTracker2Web
 
       # Import convenience functions from controllers

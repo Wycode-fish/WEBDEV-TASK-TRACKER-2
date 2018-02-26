@@ -5,7 +5,7 @@ set -e
 CURRENT_NAME="TaskTracker2"
 CURRENT_OTP="task_tracker"
 
-NEW_NAME="TaskTracker2"
+NEW_NAME="TaskTracker22"
 NEW_OTP="task_tracker_2"
 
 ack -l $CURRENT_NAME | xargs sed -i '' -e "s/$CURRENT_NAME/$NEW_NAME/g"
