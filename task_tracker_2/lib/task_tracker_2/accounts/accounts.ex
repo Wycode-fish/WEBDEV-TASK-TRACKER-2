@@ -119,7 +119,7 @@ defmodule TaskTracker2.Accounts do
   end
 
   # We want a non-bang variant
-  def get_user(id), do: Repo.get(User, id)
+  # def get_user(id), do: Repo.get(User, id)
 
   # And we want by-email lookup
   def get_user_by_email(email) do
