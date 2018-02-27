@@ -1,3 +1,0 @@
-<h2>Edit Slot</h2>
-
-<%= render "slotform.html", Map.put(assigns, :action, slot_path(@conn, :update, @slot)) %>
